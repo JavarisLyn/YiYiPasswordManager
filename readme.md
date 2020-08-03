@@ -1,3 +1,10 @@
-# Android OKHTTP3连接常见问题
-## https://blog.csdn.net/Liu7073/article/details/106637118/
-## 关闭防火墙！
+# Android OKHTTP3常见问题
+## 和服务端连接常见问题
+### https://blog.csdn.net/Liu7073/article/details/106637118/
+### 关闭防火墙！
+---
+## OkHTTP的同步和异步方法
+### [同步方法](https://www.iteye.com/blog/xuanzhui-2284601)
+---
+## 自定义对象转为Json格式
+### https://www.jianshu.com/p/ef6e829f2907
