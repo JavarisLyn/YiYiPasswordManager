@@ -3,13 +3,18 @@
 
     <item
         android:id="@+id/fingerprint"
-        android:icon="@drawable/ic_fingerprint_black_24dp"
+        android:icon="@drawable/ic_fingerprint_black_24dp                                                                                                    "
         android:title="指纹锁" />
 
     <item
         android:id="@+id/aboutus"
         android:icon="@drawable/ic_perm_identity_black_24dp"
         android:title="关于我们"
+        />
+    <item
+        android:id="@+id/loginItem"
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        android:title="登录"
         />
 
 

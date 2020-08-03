@@ -28,6 +28,7 @@ import com.codersun.fingerprintcompat.FingerManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -126,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         startActivity(intent);
                         Log.i("mNavigationView", "关于 is clicked!");
                         break;
+                    case R.id.loginItem:
+                        Intent intent2=new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent2);
+                        break;
+
                 }
                 return true;
             }

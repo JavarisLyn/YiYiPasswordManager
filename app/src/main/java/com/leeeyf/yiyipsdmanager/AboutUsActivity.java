@@ -1,6 +1,7 @@
 package com.leeeyf.yiyipsdmanager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -55,6 +56,12 @@ public class AboutUsActivity extends AppCompatActivity {
 //            }
 //        });
 
+//        Element store = new Element();
+//        store.setTitle("去应用商店为我们评分");
+//        store.setValue("market://details?id=");
+//        Uri uri = Uri.parse("market://details?id="+"com.leeeyf.yiyipsdmanager");
+//        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+//        store.setIntent(goToMarket);
 
 
         View aboutPage = new AboutPage(this)
@@ -67,7 +74,8 @@ public class AboutUsActivity extends AppCompatActivity {
                 .addGroup("与我联系")
                 .addEmail("2956705997@qq.com")//邮箱
                 .addWebsite("www.leeyangfan.com")//网站
-                .addPlayStore("com.huawei.appmarket")//应用商店
+                //.addItem(store)
+                .addPlayStore("com.leeeyf.yiyipsdmanager")//应用商店
                 .addGitHub("JavarisLyn")//github
                 .create();
         relativeLayout.addView(aboutPage);

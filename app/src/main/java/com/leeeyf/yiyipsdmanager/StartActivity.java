@@ -83,7 +83,23 @@ public class StartActivity extends AppCompatActivity {
                             .setFingerChangeCallback(new AonFingerChangeCallback() {
                                 @Override
                                 protected void onFingerDataChange() {
-                                    showToast("指纹数据发生了变化");
+                                    //showToast("指纹数据发生了变化");
+                                    showToast("验证成功");
+                                    if(navigationView!=null)
+                                    {
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putBoolean("fingerlock",true);
+                                        editor.commit();
+                                        //IfUseFingerLock=false;
+                                        navigationView.getMenu().getItem(0).setIcon(R.drawable.ic_fingerprint_color_24dp);
+                                        navigationView.setItemIconTintList(null);
+                                    }
+
+
+
+                                    Intent intent = new Intent(StartActivity.this,MainActivity.class);
+                                    startActivity(intent);
+
                                 }
                             })
                             .create()
