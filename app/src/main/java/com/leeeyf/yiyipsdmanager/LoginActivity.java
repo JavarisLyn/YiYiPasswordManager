@@ -2,8 +2,10 @@ package com.leeeyf.yiyipsdmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,11 +14,15 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.leeeyf.yiyipsdmanager.Utils.RSAUtils;
 import com.leeeyf.yiyipsdmanager.entity.LoginResult;
 import com.leeeyf.yiyipsdmanager.entity.LoginUser;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -36,6 +42,11 @@ public class LoginActivity extends AppCompatActivity {
     private String password_str;
     private Button loginBtn;
 
+    public static SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    private RSAPublicKey publickey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +54,31 @@ public class LoginActivity extends AppCompatActivity {
 
         initview();
 
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             LoginResult rst;
             @Override
             public void onClick(View v) {
-                Thread newThread;
 
+                Thread newThread1;
+                newThread1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            publickey = getPublicKey();
+                            Log.d("gongyao", ""+publickey );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                newThread1.start();
+                try {
+                    newThread1.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Thread newThread;
                 newThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -67,26 +96,18 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
                 System.out.println("rst "+rst.getMsg());
                 if(rst.isState()){
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
                     t.show();
-                }
-
-                else{
+                } else{
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
                     t.show();
+
+                    //saveLoginState();
                 }
-
-
             }
-
-
         });
-
-
-
     }
 
     private void initview(){
@@ -98,7 +119,16 @@ public class LoginActivity extends AppCompatActivity {
     private LoginResult user_auth() throws IOException {
         username_str = username.getText().toString();
         password_str = password.getText().toString();
-        LoginUser user = new LoginUser(username_str,password_str);
+        String rsa_password = null;
+        try {
+            rsa_password = RSAUtils.encryptByPublicKey(password_str, publickey);
+            //利用公钥加密
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LoginUser user = new LoginUser(username_str,rsa_password);
+        Log.d("rsapassword", rsa_password);
         String userStr = JSON.toJSONString(user);
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -167,5 +197,42 @@ public class LoginActivity extends AppCompatActivity {
 
         return result;
     }
+
+    // 存储用户登录状态
+    private void saveLoginState(){
+        editor = sharedPreferences.edit();
+        editor.putBoolean("loginState",true);
+        editor.commit();
+    }
+
+    //得到公钥
+    private RSAPublicKey getPublicKey() throws IOException {
+        RSAPublicKey publicKey = null;
+
+        String url = "http://192.168.1.73:8081/user/getkey";
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()  //默认为GET请求，可以不写
+                .build();
+        Call call = client.newCall(request);
+
+
+        Response response = call.execute();
+        String responseStr = response.body().string();
+        HashMap<String,String> map = JSONObject.parseObject(responseStr, HashMap.class);
+        String modulus = map.get("modulus");
+        //String publicExponent = new BigInteger(String.valueOf(map.get("publicExponent")));
+        String publicExponent = map.get("publicExponent");
+        //这个地方我也奇怪，后端传的明明是String类型，过来后却分别变成BigInteger和Integer了
+
+        publicKey = RSAUtils.getPublicKey(modulus, publicExponent);
+
+
+        return publicKey;
+
+    }
+
+
 
 }

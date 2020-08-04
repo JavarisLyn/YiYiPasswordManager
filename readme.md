@@ -8,3 +8,6 @@
 ---
 ## 自定义对象转为Json格式
 ### https://www.jianshu.com/p/ef6e829f2907
+
+## 加密解密部分的坑
+### [看这篇文章，服务端和客户端填充方式不同会导致解密失败！！](https://www.jianshu.com/p/a4a6c6b465b0)
