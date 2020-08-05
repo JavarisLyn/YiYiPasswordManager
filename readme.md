@@ -11,3 +11,7 @@
 
 ## 加密解密部分的坑
 ### [看这篇文章，服务端和客户端填充方式不同会导致解密失败！！](https://www.jianshu.com/p/a4a6c6b465b0)
+
+## 布局坑
+### com.google.android.material.textfield.TextInputLayout而不要使用android.support.design.widget.TextInputLayout
+[详见此文](https://stackoverflow.com/questions/38423809/android-support-design-widget-textinputlayout-could-not-be-instantiated)

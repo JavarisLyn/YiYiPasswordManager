@@ -2,13 +2,14 @@ package com.leeeyf.yiyipsdmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -19,15 +20,10 @@ import com.leeeyf.yiyipsdmanager.entity.LoginResult;
 import com.leeeyf.yiyipsdmanager.entity.LoginUser;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private String username_str;
     private String password_str;
     private Button loginBtn;
+    private TextView gotoRegister;
 
     public static SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -108,12 +105,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        gotoRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,RegisterAcyivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right2left,R.anim.open_close);//实现从右向左滑出
+            }
+        });
     }
 
     private void initview(){
         username = findViewById(R.id.username_login);
         password = findViewById(R.id.password_login);
         loginBtn = findViewById(R.id.login_btn);
+        gotoRegister = findViewById(R.id.goRegister);
     }
 
     private LoginResult user_auth() throws IOException {

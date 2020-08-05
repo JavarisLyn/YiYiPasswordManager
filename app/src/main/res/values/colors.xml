@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="red">#E61616</color>
     <color name="toolbar">#EEECEC</color>
+    <color name="textInputLayout">#96ffffff</color>
 </resources>
