@@ -1,4 +1,4 @@
-package com.leeeyf.yiyipsdmanager;
+package com.leeeyf.yiyipsdmanager.entity;
 
 import android.graphics.drawable.Drawable;
 

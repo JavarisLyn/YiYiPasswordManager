@@ -6,7 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
+import com.leeeyf.yiyipsdmanager.entity.Account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ CRUD {
         ContentValues.put(AccountDatabase.TIME,account.getTime());
         ContentValues.put(AccountDatabase.ICON,account.getIcon());
         
-        long insrtId = db.insert(AccountDatabase.TABLE_NAME,null,ContentValues);
+        int insrtId = (int)db.insert(AccountDatabase.TABLE_NAME,null,ContentValues);
         account.setId(insrtId);
         return account;
     }
@@ -67,7 +68,7 @@ CRUD {
             while(cursor.moveToNext())
             {
                 Account e = new Account(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getBlob(5));
-                e.setId(cursor.getLong(cursor.getColumnIndex(AccountDatabase.ID)));
+                e.setId(cursor.getInt(cursor.getColumnIndex(AccountDatabase.ID)));
                 accounts.add(e);
                 //Log.d("datawacher", "getAllAccounts: "+e.getIcon());
             }

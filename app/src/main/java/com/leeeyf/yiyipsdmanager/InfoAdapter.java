@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.leeeyf.yiyipsdmanager.entity.Account;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -16,8 +16,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.leeeyf.yiyipsdmanager.Utils.RSAUtils;
+import com.leeeyf.yiyipsdmanager.entity.Account;
 import com.leeeyf.yiyipsdmanager.entity.LoginResult;
 import com.leeeyf.yiyipsdmanager.entity.LoginUser;
+import com.leeeyf.yiyipsdmanager.entity.UserwithAccounts;
 
 import java.io.IOException;
 import java.security.interfaces.RSAPublicKey;
@@ -29,17 +31,18 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import static com.leeeyf.yiyipsdmanager.MainActivity.sharedPreferences;
+import static com.leeeyf.yiyipsdmanager.MainActivity.Accounts;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
     private EditText password;
-    private String username_str;
+    public static String username_str;
     private String password_str;
     private Button loginBtn;
     private TextView gotoRegister;
 
-    public static SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
     private RSAPublicKey publickey;
@@ -97,6 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(rst.isState()){
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
                     t.show();
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
+
+                    //uploadData();
+
                 } else{
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
                     t.show();
@@ -115,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void initview(){
         username = findViewById(R.id.username_login);

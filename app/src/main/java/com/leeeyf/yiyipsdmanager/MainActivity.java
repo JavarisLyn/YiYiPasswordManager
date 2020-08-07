@@ -24,15 +24,31 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.codersun.fingerprintcompat.FingerManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.leeeyf.yiyipsdmanager.entity.Account;
+import com.leeeyf.yiyipsdmanager.entity.LoginResult;
+import com.leeeyf.yiyipsdmanager.entity.LoginUser;
+import com.leeeyf.yiyipsdmanager.entity.UserwithAccounts;
 
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+import static com.leeeyf.yiyipsdmanager.LoginActivity.username_str;
+import static com.leeeyf.yiyipsdmanager.UploadData.UploadUserData.uploadData;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener  {
@@ -128,8 +144,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Log.i("mNavigationView", "关于 is clicked!");
                         break;
                     case R.id.loginItem:
-                        Intent intent2=new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent2);
+                        if(sharedPreferences.getBoolean("loginState",true)){
+                            Toast  t = Toast.makeText(MainActivity.this,"已登录",Toast.LENGTH_SHORT);
+                            t.show();
+                        }
+                        else{
+                            Intent intent2=new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent2);
+                        }
+
                         break;
 
                 }
@@ -162,11 +185,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //                }
 //            }
 //        });
-
-
-
-
-
 
         mAdapter = new InfoAdapter(this,Accounts);
 
@@ -238,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
+
+        uploadData();
 
 
     }
@@ -352,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             byte[] appIcon = intent.getByteArrayExtra("icon");
 
 
-            long id = intent.getExtras().getLong("id");
+            int id = intent.getExtras().getInt("id");
             Log.d("name", "onActivityResult:"+accountname+username+password+id);
 
 
@@ -365,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else if(resultCode==2)//删除
         {
-            long id=intent.getExtras().getLong("id");
+            int id=intent.getExtras().getInt("id");
             Account account = new Account("1","1","1","1",null);
             account.setId(id);
             CRUD op = new CRUD(this.getApplicationContext());

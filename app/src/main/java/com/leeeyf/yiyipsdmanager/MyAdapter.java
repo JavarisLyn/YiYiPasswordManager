@@ -15,6 +15,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.leeeyf.yiyipsdmanager.entity.AppInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
