@@ -33,6 +33,7 @@ public class EditActivity extends AppCompatActivity {
     private Button savebtn;
     private Button dltbtn;
     private Button selectbtn;
+    //private Button addBtn;
     private TextInputEditText old_account_layout;
     private TextInputEditText old_username_layout;
     private TextInputEditText old_password_layout;
@@ -69,6 +70,8 @@ public class EditActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //add
+        //addBtn = findViewById(R.id.editfloatingActionButton);
 
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,16 @@ public class EditActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+//        addBtn.setOnClickListener(new View.OnClickListener() {//"添加"按钮事件
+//            @Override
+//            public void onClick(View v) {
+////                adapater = new NoteAdapter(getApplicationContext(),noteList);
+////                lstvw.setAdapter(adapater);
+////                refreshListView();
+//
+//            }
+//        });
 
 
 

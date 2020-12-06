@@ -91,7 +91,7 @@ public class RegisterAcyivity extends AppCompatActivity {
 
         //builder.add(json);
         final Request request = new Request.Builder()
-                .url("http://192.168.1.73:8081/user/register")
+                .url("http://192.144.143.218:8082/user/register")
                 //.url("http://www.baidu.com")
                 .post(requestBody )
                 .build();
@@ -107,8 +107,11 @@ public class RegisterAcyivity extends AppCompatActivity {
             rst.setMsg(loginResult.getMsg());
         }
         else{
+            String responseStr = temp.body().string();
+
+            LoginResult loginResult = JSONObject.parseObject(responseStr, LoginResult.class);
             rst.setState(false);
-            rst.setMsg("注册失败");
+            rst.setMsg(loginResult.getMsg());
         }
         return rst;
     }

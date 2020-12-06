@@ -108,4 +108,13 @@
         android:textColor="@color/white"
         android:textSize="16dp"
         android:background="@color/red"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editfloatingActionButton"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_add_black_24dp" /><!--这里是app:srcCompat而不是tools:srcCompat-->
 </LinearLayout>

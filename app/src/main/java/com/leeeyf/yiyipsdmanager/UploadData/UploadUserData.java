@@ -33,7 +33,7 @@ public class UploadUserData {
                     OkHttpClient mOkHttpClient = new OkHttpClient();
                     RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                     final Request request = new Request.Builder()
-                            .url("http://192.168.1.73:8081/user/saveUserData")
+                            .url("http://192.144.143.218:8082/user/saveUserData")
                             .post(requestBody )
                             .build();
                     Call call = mOkHttpClient.newCall(request);

@@ -2,9 +2,19 @@ package com.leeeyf.yiyipsdmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +24,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
 import com.leeeyf.yiyipsdmanager.Utils.RSAUtils;
 import com.leeeyf.yiyipsdmanager.entity.Account;
@@ -31,8 +42,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static com.leeeyf.yiyipsdmanager.MainActivity.navigationView;
 import static com.leeeyf.yiyipsdmanager.MainActivity.sharedPreferences;
 import static com.leeeyf.yiyipsdmanager.MainActivity.Accounts;
+import static com.leeeyf.yiyipsdmanager.UploadData.UploadUserData.uploadData;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -53,17 +67,35 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initview();
+        LoadingDailog.Builder loadBuilder=new LoadingDailog.Builder(this)
+                .setMessage("加载中...")
+                .setCancelable(true)
+                .setCancelOutside(true);
+
+
+        //加下划线
+        SpannableString content = new SpannableString(getString(R.string.register_hint));
+        content.setSpan(new UnderlineSpan(), 6, 8, 0);
+        gotoRegister.setText(content);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             LoginResult rst;
+            private Handler handler = new Handler();
+            private ProgressDialog progressDialog = null;
+
             @Override
             public void onClick(View v) {
+//                LoadingDailog dialog=loadBuilder.create();
+//                dialog.show();
+//
 
+                progressDialog = ProgressDialog.show(LoginActivity.this, "请稍等...", "获取数据中...", true);
                 Thread newThread1;
                 newThread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
+
                             publickey = getPublicKey();
                             Log.d("gongyao", ""+publickey );
                         } catch (IOException e) {
@@ -98,19 +130,26 @@ public class LoginActivity extends AppCompatActivity {
 
                 System.out.println("rst "+rst.getMsg());
                 if(rst.isState()){
+                    //登陆成功
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
+
+
                     t.show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
+                    saveLoginState();
 
-                    //uploadData();
-
+                    uploadData();
+//                    dialog.hide();
+//                    dialog.dismiss();
+                    progressDialog.dismiss();
                 } else{
                     Toast  t = Toast.makeText(LoginActivity.this,rst.getMsg(),Toast.LENGTH_SHORT);
                     t.show();
 
                     //saveLoginState();
                 }
+
             }
         });
 
@@ -130,6 +169,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.password_login);
         loginBtn = findViewById(R.id.login_btn);
         gotoRegister = findViewById(R.id.goRegister);
+
     }
 
     private LoginResult user_auth() throws IOException {
@@ -158,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //builder.add(json);
         final Request request = new Request.Builder()
-                .url("http://192.168.1.73:8081/user/login")
+                .url("http://192.144.143.218:8082/user/login")
                 //.url("http://www.baidu.com")
                 .post(requestBody )
                 .build();
@@ -225,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
     private RSAPublicKey getPublicKey() throws IOException {
         RSAPublicKey publicKey = null;
 
-        String url = "http://192.168.1.73:8081/user/getkey";
+        String url = "http://192.144.143.218:8082/user/getkey";
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -248,6 +288,8 @@ public class LoginActivity extends AppCompatActivity {
         return publicKey;
 
     }
+
+
 
 
 

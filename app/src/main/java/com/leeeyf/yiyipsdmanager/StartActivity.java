@@ -111,6 +111,7 @@ public class StartActivity extends AppCompatActivity {
 
 
         }
+
     }
     private void showToast(String content) {
         Toast.makeText(this, content, Toast.LENGTH_SHORT).show();

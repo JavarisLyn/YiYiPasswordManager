@@ -31,3 +31,6 @@
 ### dao可以不写ParameType，若Param为对象，可以用a.b的形式来说明
 ### 用HashMap包装dao层会接收到null
 ---
+## android在手机调试提示签名不同 需要重新安装
+### 把之前的签名复制并覆盖 路径在C:\Users\LeeeYF\.android\debug.keystore
+### https://blog.csdn.net/a925177652/article/details/80208911 在这里修改签名文件

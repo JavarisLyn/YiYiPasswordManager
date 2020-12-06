@@ -91,7 +91,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         editor = sharedPreferences.edit();  //获取输入能力
         //sliding
 
+
+
          navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        if(sharedPreferences.getBoolean("loginState",false)){
+            navigationView.getMenu().getItem(2).setTitle("退出登录");
+        }
+        else{
+            navigationView.getMenu().getItem(2).setTitle("登录");
+        }
          navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -144,11 +152,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Log.i("mNavigationView", "关于 is clicked!");
                         break;
                     case R.id.loginItem:
-                        if(sharedPreferences.getBoolean("loginState",true)){
-                            Toast  t = Toast.makeText(MainActivity.this,"已登录",Toast.LENGTH_SHORT);
+                        if(sharedPreferences.getBoolean("loginState",false)){
+                            //false是默认值
+                            //navigationView.getMenu().getItem(2).setTitle("退出登录");//登录按钮
+                            //登录状态
+                            Toast  t = Toast.makeText(MainActivity.this,"退出登录",Toast.LENGTH_SHORT);
                             t.show();
+                            //退出登录
+                            editor = sharedPreferences.edit();
+                            editor.putBoolean("loginState",false);
+                            editor.commit();
+                            navigationView.getMenu().getItem(2).setTitle("登录");
+
                         }
                         else{
+                            //登出状态
+                            //navigationView.getMenu().getItem(2).setTitle("登录");//登录按钮
                             Intent intent2=new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(intent2);
                         }
