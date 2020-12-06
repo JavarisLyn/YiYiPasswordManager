@@ -1,6 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\LeeeYF\\.android\\debug.keystore')
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -10,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
     buildTypes {
         release {
@@ -47,5 +53,6 @@ dependencies {
     implementation 'com.squareup.okio:okio:2.4.0'
     implementation 'com.alibaba:fastjson:1.2.47'
     implementation 'com.google.code.gson:gson:2.8.6'
+    compile 'com.github.gittjy:LoadingDialog:1.0.2'
 
 }
